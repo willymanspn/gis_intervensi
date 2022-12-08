@@ -68,7 +68,7 @@ class Ikm extends CI_Controller
         } else {
             $data = array(
                 'nm_ikm' => $this->input->post('nm_ikm'),
-                'id_produk' => $this->input->post('id_produk'),
+                'produk_ikm' => $this->input->post('produk_ikm'),
                 'alamat_ikm' => $this->input->post('alamat_ikm'),
                 'no_hp' => $this->input->post('no_hp'),
                 'id_kecamatan' => $this->input->post('id_kecamatan'),
@@ -78,17 +78,17 @@ class Ikm extends CI_Controller
                 'latitude' => $this->input->post('latitude'),
                 'longitude' => $this->input->post('longitude'),
             );
-        }
-        // $this->namaModel->input(variabel penampung);
-        $this->M_ikm->input($data);
+            // $this->namaModel->input(variabel penampung);
+            $this->M_ikm->input($data);
 
-        // Pesan data berhasil diinput
-        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+            // Pesan data berhasil diinput
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
             Data pemetaan IKM berhasil ditambahkan!
             </div>');
 
-        // redirect('namaControler/method');
-        redirect('SuperAdmin/Ikm/inputForm');
+            // redirect('namaControler/method');
+            redirect('SuperAdmin/Ikm/inputForm');
+        }
     }
 
     public function editForm($id_ikm)
