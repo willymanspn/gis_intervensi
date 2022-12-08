@@ -34,7 +34,7 @@ class Ikm extends CI_Controller
     public function inputForm()
     {
         $this->form_validation->set_rules('nm_ikm', 'Nama IKM', 'required', []);
-        $this->form_validation->set_rules('produk_ikm', 'Produk', 'required', []);
+        $this->form_validation->set_rules('id_produk', 'Nama Produk', 'required', []);
         $this->form_validation->set_rules('alamat_ikm', 'Alamat IKM', 'required', []);
         $this->form_validation->set_rules('id_kecamatan', 'Kecamatan', 'required', []);
         $this->form_validation->set_rules('id_kelurahan', 'Kelurahan', 'required', []);

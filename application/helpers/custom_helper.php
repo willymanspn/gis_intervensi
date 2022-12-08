@@ -22,8 +22,14 @@ function datatable($c = '')
   return base_url('assets/DataTables/' . $c);
 }
 
-// Helper untuk plugin datatable tambahan
+// Helper untuk foto profile
 function img($d = '')
 {
   return base_url('assets/img/' . $d);
+}
+
+// Helper untuk foto profile
+function select($e = '')
+{
+  return base_url('assets/bootstrap-select/dist/' . $e);
 }

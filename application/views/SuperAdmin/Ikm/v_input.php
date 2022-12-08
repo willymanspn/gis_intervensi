@@ -45,9 +45,22 @@
                         </div>
 
                         <div class="form-group">
+                            <div class="row mx-auto">
+                                <label for="exampleFormControlTextarea1">Nama Produk</label>
+                            </div>
+                            <div class="row mx-auto">
+                                <select name="id_produk[]" class="selectpicker" multiple data-live-search="true">
+                                    <?php foreach ($produk as $row) : ?>
+                                        <option value="<?= $row->id_produk ?>"><?= $row->nm_produk ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- <div class="form-group">
                             <label for="exampleInputText2">Produk</label>
                             <input type="text" class="form-control" name="produk_ikm" id="exampleInputText2" placeholder="Masukan nama produk" required>
-                        </div>
+                        </div> -->
 
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1">Alamat</label>

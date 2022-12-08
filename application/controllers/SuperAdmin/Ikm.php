@@ -12,6 +12,10 @@ class Ikm extends CI_Controller
         $this->load->model('M_kelurahan');
         $this->load->model('M_kategori');
         $this->load->model('M_auth');
+        $this->load->model('M_produk');
+        // Nambah
+        $this->load->model('M_dashboard');
+        // 
         if ($this->session->userdata('id_role') != 1) {
             redirect('Auth');
         }
@@ -34,12 +38,13 @@ class Ikm extends CI_Controller
     public function inputForm()
     {
         $this->form_validation->set_rules('nm_ikm', 'Nama IKM', 'required', []);
-        $this->form_validation->set_rules('produk_ikm', 'Produk', 'required', []);
+        // $this->form_validation->set_rules('produk_ikm', 'Produk', 'required', []);
         $this->form_validation->set_rules('alamat_ikm', 'Alamat IKM', 'required', []);
         $this->form_validation->set_rules('id_kecamatan', 'Kecamatan', 'required', []);
         $this->form_validation->set_rules('id_kelurahan', 'Kelurahan', 'required', []);
         $this->form_validation->set_rules('id_kategori', 'Kategori', 'required', []);
         $this->form_validation->set_rules('latitude', 'Latitude', 'required', []);
+        $this->form_validation->set_rules('longitude', 'Longitude', 'required', []);
         $this->form_validation->set_rules('longitude', 'Longitude', 'required', []);
 
         if ($this->form_validation->run() == FALSE) {
@@ -53,6 +58,7 @@ class Ikm extends CI_Controller
                 'kecamatan' => $this->M_kecamatan->get(),
                 'kelurahan' => $this->M_kelurahan->get(),
                 'kategori' => $this->M_kategori->get(),
+                'produk' => $this->M_produk->get(),
                 // 'location' => $this->IkmModel->get(),
                 // 'kecamatan' => $this->KecamatanModel->get(),
                 // 'kelurahan' => $this->KelurahanModel->get(),
@@ -60,10 +66,9 @@ class Ikm extends CI_Controller
             );
             $this->load->view('Layouts/UserLayout/index', $data, false);
         } else {
-            // Simpan data ke DB
             $data = array(
                 'nm_ikm' => $this->input->post('nm_ikm'),
-                'produk_ikm' => $this->input->post('produk_ikm'),
+                'id_produk' => $this->input->post('id_produk'),
                 'alamat_ikm' => $this->input->post('alamat_ikm'),
                 'no_hp' => $this->input->post('no_hp'),
                 'id_kecamatan' => $this->input->post('id_kecamatan'),
@@ -73,17 +78,17 @@ class Ikm extends CI_Controller
                 'latitude' => $this->input->post('latitude'),
                 'longitude' => $this->input->post('longitude'),
             );
-            // $this->namaModel->input(variabel penampung);
-            $this->M_ikm->input($data);
-
-            // Pesan data berhasil diinput
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-            Data pemetaan IKM berhasil ditambahkan!
-           </div>');
-
-            // redirect('namaControler/method');
-            redirect('SuperAdmin/Ikm/inputForm');
         }
+        // $this->namaModel->input(variabel penampung);
+        $this->M_ikm->input($data);
+
+        // Pesan data berhasil diinput
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+            Data pemetaan IKM berhasil ditambahkan!
+            </div>');
+
+        // redirect('namaControler/method');
+        redirect('SuperAdmin/Ikm/inputForm');
     }
 
     public function editForm($id_ikm)
@@ -107,6 +112,7 @@ class Ikm extends CI_Controller
                 'kecamatan' => $this->M_kecamatan->get(),
                 'kelurahan' => $this->M_kelurahan->get(),
                 'kategori' => $this->M_kategori->get(),
+                'produk' => $this->M_produk->get(),
             );
             $this->load->view('Layouts/UserLayout/index', $data, false);
         } else {
@@ -123,6 +129,7 @@ class Ikm extends CI_Controller
                 'date_created' => $this->input->post('date_created'),
                 'latitude' => $this->input->post('latitude'),
                 'longitude' => $this->input->post('longitude'),
+                'id_produk' => $this->input->post('id_produk'),
             );
             // $this->namaModel->input(variabel penampung);
             $this->M_ikm->edit($data);
@@ -162,6 +169,11 @@ class Ikm extends CI_Controller
             'kecamatan' => $this->M_kecamatan->get(),
             'kelurahan' => $this->M_kelurahan->get(),
             'kategori' => $this->M_kategori->get(),
+            'num_ikm' => $this->M_dashboard->ikm_count(),
+            'num_kec' => $this->M_dashboard->kec_count(),
+            'num_kel' => $this->M_dashboard->kel_count(),
+            'num_kat' => $this->M_dashboard->kategori_count(),
+            'num_adm' => $this->M_dashboard->admin_count(),
             // 'location' => $this->IkmModel->get(),
             // 'g_kecamatan' => $this->KecamatanModel->get()
         );

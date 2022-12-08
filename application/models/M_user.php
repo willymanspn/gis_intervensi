@@ -8,6 +8,7 @@ class M_user extends CI_Model
         $this->db->select('*');
         $this->db->from('tb_user');
         $this->db->join('tb_role', 'tb_role.id_role = tb_user.id_role', 'left');
+        $this->db->order_by('id_user', 'desc');
         return $this->db->get()->result();
     }
 

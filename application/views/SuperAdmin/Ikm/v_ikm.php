@@ -53,6 +53,7 @@
                         <tr>
                             <td><?= $no++ ?></td>
                             <td><?= $row->nm_ikm ?></td>
+                            <td><?= $row->nm_produk ?></td>
                             <td><?= $row->produk_ikm ?></td>
                             <td><?= $row->alamat_ikm ?></td>
                             <td><?= $row->no_hp ?></td>

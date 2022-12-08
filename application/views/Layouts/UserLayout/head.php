@@ -27,6 +27,9 @@
   <!-- additional package for datatable -->
   <link rel="stylesheet" href="<?= datatable('/Buttons-2.3.2/css/buttons.bootstrap4.min.css') ?>" />
 
+  <!-- additonal plugin for dropdown select multiple -->
+  <link rel="stylesheet" href="<?= select('/css/bootstrap-select.min.css') ?>" />
+
   <!-- Import LeafletJS JS -->
   <script src="<?= leaflet('leaflet.js') ?>"></script>
 
@@ -39,5 +42,8 @@
 
   <!-- Chart library -->
   <script src="<?= templates('vendor/chart.js/Chart.min.js') ?>"></script>
+
+  <!-- additonal plugin for dropdown select multiple -->
+  <script src="<?= select('/js/bootstrap-select.min.js') ?>"></script>
 
 </head>

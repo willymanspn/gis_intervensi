@@ -97,28 +97,8 @@
                 <h6 class="m-0 font-weight-bold text-primary">Kecamatan Bogor</h6>
             </div>
             <div class="card-body">
-                <div class="chart-pie pt-4 pb-2">
-                    <canvas id="myPieChart"></canvas>
-                </div>
-                <div class="mt-4 text-center small">
-                    <span class="mr-2">
-                        <i class="fas fa-circle text-primary"></i> Bogor Selatan
-                    </span>
-                    <span class="mr-2">
-                        <i class="fas fa-circle text-danger"></i> Bogor Timur
-                    </span>
-                    <span class="mr-2">
-                        <i class="fas fa-circle text-success"></i> Bogor Tengah
-                    </span>
-                    <span class="mr-2">
-                        <i class="fas fa-circle text-warning"></i> Bogor Barat
-                    </span>
-                    <span class="mr-2">
-                        <i class="fas fa-circle" style="color: #F237FF;"></i> Bogor Utara
-                    </span>
-                    <span class="mr-2">
-                        <i class="fas fa-circle" style="color: #A94A89;"></i> Tanah Sareal
-                    </span>
+                <div class="chart-bar pt-4 pb-2">
+                    <canvas id="myBarChart" width="350" height="296"></canvas>
                 </div>
             </div>
         </div>
@@ -203,13 +183,42 @@
     // View GeoJSON Dinamis End
     // GeoJson End
 
-    // Pie Chart Example
-    var ctx = document.getElementById("myPieChart");
-    var myPieChart = new Chart(ctx, {
-        type: 'doughnut',
+    function number_format(number, decimals, dec_point, thousands_sep) {
+        // *     example: number_format(1234.56, 2, ',', ' ');
+        // *     return: '1 234,56'
+        number = (number + '').replace(',', '').replace(' ', '');
+        var n = !isFinite(+number) ? 0 : +number,
+            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+            s = '',
+            toFixedFix = function(n, prec) {
+                var k = Math.pow(10, prec);
+                return '' + Math.round(n * k) / k;
+            };
+        // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+        if (s[0].length > 3) {
+            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+        }
+        if ((s[1] || '').length < prec) {
+            s[1] = s[1] || '';
+            s[1] += new Array(prec - s[1].length + 1).join('0');
+        }
+        return s.join(dec);
+    }
+
+    // Bar Chart Example
+    var ctx = document.getElementById("myBarChart");
+    var myBarChart = new Chart(ctx, {
+        type: 'bar',
         data: {
             labels: ["Bogor Selatan", "Bogor Timur", "Bogor Tengah", "Bogor Barat", "Bogor Utara", "Tanah Sareal"],
             datasets: [{
+                label: "Total",
+                backgroundColor: "#4e73df",
+                hoverBackgroundColor: "#2e59d9",
+                borderColor: "#4e73df",
                 data: [
                     <?= $this->db->query("SELECT id_kecamatan FROM tb_ikm WHERE id_kecamatan=1")->num_rows() ?>,
                     <?= $this->db->query("SELECT id_kecamatan FROM tb_ikm WHERE id_kecamatan=2")->num_rows() ?>,
@@ -219,13 +228,59 @@
                     <?= $this->db->query("SELECT id_kecamatan FROM tb_ikm WHERE id_kecamatan=6")->num_rows() ?>,
                 ],
                 backgroundColor: ['#3863FF', '#FF3940', '#39CB3A', '#FFF000', '#F237FF', '#A94A89'],
-                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-                hoverBorderColor: "rgba(234, 236, 244, 1)",
             }],
         },
         options: {
             maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 25,
+                    top: 25,
+                    bottom: 0
+                }
+            },
+            scales: {
+                xAxes: [{
+                    time: {
+                        unit: 'kecamatan'
+                    },
+                    gridLines: {
+                        display: true,
+                        drawBorder: false
+                    },
+                    ticks: {
+                        maxTicksLimit: 6
+                    },
+                    maxBarThickness: 25,
+                }],
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                        max: 25,
+                        maxTicksLimit: 7,
+                        padding: 5,
+                        // Include a dollar sign in the ticks
+                        callback: function(value, index, values) {
+                            return number_format(value);
+                        }
+                    },
+                    gridLines: {
+                        color: "rgb(234, 236, 244)",
+                        zeroLineColor: "rgb(234, 236, 244)",
+                        drawBorder: false,
+                        borderDash: [2],
+                        zeroLineBorderDash: [2]
+                    }
+                }],
+            },
+            legend: {
+                display: false
+            },
             tooltips: {
+                titleMarginBottom: 10,
+                titleFontColor: '#6e707e',
+                titleFontSize: 14,
                 backgroundColor: "rgb(255,255,255)",
                 bodyFontColor: "#858796",
                 borderColor: '#dddfeb',
@@ -234,12 +289,14 @@
                 yPadding: 15,
                 displayColors: false,
                 caretPadding: 10,
+                callbacks: {
+                    label: function(tooltipItem, chart) {
+                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                        return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
+                    }
+                }
             },
-            legend: {
-                display: false
-            },
-            cutoutPercentage: 80,
-        },
+        }
     });
 </script>
 <!-- Leaflet End -->

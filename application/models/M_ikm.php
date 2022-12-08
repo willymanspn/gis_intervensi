@@ -28,6 +28,8 @@ class M_ikm extends CI_Model
         $this->db->join('tb_kecamatan', 'tb_kecamatan.id_kecamatan = tb_ikm.id_kecamatan', 'left');
         $this->db->join('tb_kelurahan', 'tb_kelurahan.id_kelurahan = tb_ikm.id_kelurahan', 'left');
         $this->db->join('tb_kategori', 'tb_kategori.id_kategori = tb_ikm.id_kategori', 'left');
+        $this->db->join('tb_produk', 'tb_produk.id_produk = tb_ikm.id_produk', 'left');
+        $this->db->order_by('id_ikm', 'desc');
 
         return $this->db->get()->result();
     }
